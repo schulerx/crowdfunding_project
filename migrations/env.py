@@ -13,6 +13,8 @@ from app.config import settings
 # Пример:
 from app.models.users import UserModel
 from app.models.roles import RoleModel
+from app.models.categories import CategoriesModel
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
