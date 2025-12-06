@@ -14,7 +14,9 @@ from app.config import settings
 from app.models.users import UserModel
 from app.models.roles import RoleModel
 from app.models.categories import CategoriesModel
-
+from app.models.project import ProjectModel
+from app.models.rewards import RewardModel
+from app.models.donations import DonationModel
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
