@@ -8,6 +8,7 @@ from app.exceptions.auth import (
     InvalidJWTTokenError,
     InvalidTokenHTTPError,
     NoAccessTokenHTTPError,
+    IsNotAdminHTTPError,
 )
 from app.services.auth import AuthService
 from app.database.db_manager import DBManager
@@ -45,3 +46,13 @@ async def get_db():
 
 
 DBDep = Annotated[DBManager, Depends(get_db)]
+
+async def check_is_admin(db: DBDep, user_id:UserIdDep):
+    user = await db.users.get_one_or_none_with_role(id=user_id)
+
+    if user.role.name == "admin":
+        return True
+    else:
+        raise IsNotAdminHTTPError
+    
+IsAdminDep = Annotated[int, Depends(check_is_admin)]

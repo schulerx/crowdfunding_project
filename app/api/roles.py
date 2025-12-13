@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.api.dependencies import DBDep
+from app.api.dependencies import DBDep, IsAdminDep
 from app.exceptions.roles import (
     RoleAlreadyExistsError,
     RoleAlreadyExistsHTTPError,
@@ -29,6 +29,7 @@ async def create_new_role(
 @router.get("/roles", summary="Получение списка ролей")
 async def get_all_roles(
     db: DBDep,
+    is_admin: IsAdminDep,
 ) -> list[SRoleGet]:
     return await RoleService(db).get_roles()
 
