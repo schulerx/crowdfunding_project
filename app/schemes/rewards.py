@@ -1,8 +1,7 @@
-from typing import TYPE_CHECKING
+
 from pydantic import BaseModel
 
-if TYPE_CHECKING:
-    from app.schemes.projects import SProjectGet
+
 
 
 class SRewardAdd(BaseModel):
@@ -21,7 +20,3 @@ class SRewardUpdate(BaseModel):
 
 class SRewardGet(SRewardAdd):
     id: int
-
-
-class SRewardWithProject(SRewardGet):
-    project: "SProjectGet" | None = None

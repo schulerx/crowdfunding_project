@@ -1,42 +1,41 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
 from typing import List
-from app.database import get_db
-from app.models.category import Category
-from app.schemas.category import CategoryCreate, CategoryUpdate, CategoryResponse
+from app.api.dependencies import DBDep
+from app.models.categories import CategoriesModel
+from app.schemes.categories import SCategoriesAdd, SCategoriesUpdate, SCategoriesGet
 
 router = APIRouter(prefix="/api/categories", tags=["categories"])
 
-@router.get("/", response_model=List[CategoryResponse])
-async def get_categories(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+@router.get("/", response_model=List[SCategoriesGet])
+async def get_categories(skip: int = 0, limit: int = 100, db = DBDep):
     """Получить все категории"""
-    return db.query(Category).offset(skip).limit(limit).all()
+    return db.query(CategoriesModel).offset(skip).limit(limit).all()
 
-@router.get("/{category_id}", response_model=CategoryResponse)
-async def get_category(category_id: int, db: Session = Depends(get_db)):
+@router.get("/{category_id}", response_model=SCategoriesGet)
+async def get_category(category_id: int, db = DBDep):
     """Получить категорию по ID"""
-    category = db.query(Category).filter(Category.id == category_id).first()
+    category = db.query(CategoriesModel).filter(CategoriesModel.id == category_id).first()
     if not category:
         raise HTTPException(status_code=404, detail="Категория не найдена")
     return category
 
-@router.post("/", response_model=CategoryResponse, status_code=201)
-async def create_category(category_data: CategoryCreate, db: Session = Depends(get_db)):
+@router.post("/", response_model=SCategoriesGet, status_code=201)
+async def create_category(category_data: SCategoriesAdd, db = DBDep):
     """Создать новую категорию"""
-    category = Category(**category_data.dict())
+    category = CategoriesModel(**category_data.dict())
     db.add(category)
     db.commit()
     db.refresh(category)
     return category
 
-@router.put("/{category_id}", response_model=CategoryResponse)
+@router.put("/{category_id}", response_model=SCategoriesGet)
 async def update_category(
     category_id: int, 
-    category_data: CategoryUpdate, 
-    db: Session = Depends(get_db)
+    category_data: SCategoriesUpdate, 
+    db = DBDep
 ):
     """Обновить категорию"""
-    category = db.query(Category).filter(Category.id == category_id).first()
+    category = db.query(CategoriesModel).filter(CategoriesModel.id == category_id).first()
     if not category:
         raise HTTPException(status_code=404, detail="Категория не найдена")
     
@@ -48,9 +47,9 @@ async def update_category(
     return category
 
 @router.delete("/{category_id}")
-async def delete_category(category_id: int, db: Session = Depends(get_db)):
+async def delete_category(category_id: int, db = DBDep):
     """Удалить категорию"""
-    category = db.query(Category).filter(Category.id == category_id).first()
+    category = db.query(CategoriesModel).filter(CategoriesModel.id == category_id).first()
     if not category:
         raise HTTPException(status_code=404, detail="Категория не найдена")
     
