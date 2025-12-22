@@ -11,13 +11,13 @@
   <!-- Import map for potential future libs -->
   <script src="/static/js/app.js"></script>
 
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="/static/css/styles.css" />
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <div class="brand">
-        <img src="Image.jpg" alt="Общее Дело логотип" class="logo-mark" />
+        <img src="/static/images/Image.jpg" alt="Общее Дело логотип" class="logo-mark" />
         <div class="brand-text">
           <h1>Общее Дело</h1>
           <p class="tag">Платформа для краудфандинга</p>
@@ -26,10 +26,10 @@
 
       <nav class="main-nav" aria-label="Основная навигация">
         <a href="#home" class="nav-link">Главная</a>
-        <a href="projects.html" class="nav-link">Проекты</a>
-        <a href="about.html" class="nav-link">О нас</a>
-        <a href="help.html" class="nav-link">Помощь</a>
-        <a href="faq.html" class="nav-link">Вопросы</a>
+        <a href="/projects" class="nav-link">Проекты</a>
+        <a href="/about" class="nav-link">О нас</a>
+        <a href="/help" class="nav-link">Помощь</a>
+        <a href="/faq" class="nav-link">Вопросы</a>
       </nav>
 
       <button id="navToggle" class="nav-toggle" aria-label="Открыть меню" aria-expanded="false">☰</button>
@@ -51,7 +51,7 @@
           <p>Поддерживай идеи, которые важны. Привлекай средства, вдохновляй сообщество и отслеживай прогресс в реальном времени.</p>
           <div class="hero-ctas">
             <button class="btn btn-primary" id="startBtn">Начать проект</button>
-            <a href="projects.html" class="btn btn-outline">Просмотреть проекты</a>
+            <a href="/projects" class="btn btn-outline">Просмотреть проекты</a>
           </div>
 
           <ul class="features-list">
@@ -132,7 +132,7 @@
           <p><strong>Общее Дело</strong> — это прозрачная и простая в использовании платформа для краудфандинга, где идеи находят поддержку, а сообщества объединяются ради реальных изменений. Наша миссия — помочь авторам проектов собрать средства, найти единомышленников и вести прозрачную отчётность по прогрессу.</p>
           <p>Мы заботимся о безопасности платежей, удобстве использования и доверии между авторами и спонсорами. Поддержка малых инициатив и устойчивых проектов — в центре нашей платформы.</p>
           <div class="about-ctas">
-            <a href="projects.html" class="btn btn-outline">Смотреть проекты</a>
+            <a href="/projects" class="btn btn-outline">Смотреть проекты</a>
             <button class="btn btn-primary" id="aboutCreateBtn">Создать проект</button>
           </div>
         </div>
@@ -308,6 +308,6 @@
     </div>
   </div>
 
-  <script type="module" src="app.js"></script>
+  <script type="module" src="/static/js/app.js"></script>
 </body>
 </html>
