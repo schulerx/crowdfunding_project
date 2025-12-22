@@ -6,12 +6,17 @@ from fastapi.staticfiles import StaticFiles
 from app.api.web import router as web_router
 
 # Импорт API роутеров для сущностей
-# from app.api.donations import router as donations_router
-# from app.api.project import router as projects_router  # обратите внимание на название файла project.py
-# from app.api.rewards import router as rewards_router
+# ДОБАВИТЬ эти импорты:
+from app.api.donations import router as donations_router
+from app.api.project import router as projects_router
+from app.api.rewards import router as rewards_router
+from app.api.categories import router as categories_router  # новый файл
+
 from app.api.roles import router as roles_router
-# from app.api.users import router as users_router
 from app.api.auth import router as auth_router
+
+# Раскомментировать если есть users.py:
+# from app.api.users import router as users_router
 
 app = FastAPI(
     title="Crowdfunding Platform",
@@ -26,10 +31,14 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 app.include_router(web_router)
 
 # Подключение API роутеров
-# app.include_router(projects_router)
-# app.include_router(donations_router)
-# app.include_router(rewards_router)
+app.include_router(projects_router)
+app.include_router(donations_router)
+app.include_router(rewards_router)
+app.include_router(categories_router)  # новый роутер
+
+# Раскомментировать если есть users.py:
 # app.include_router(users_router)
+
 app.include_router(auth_router)
 app.include_router(roles_router)
 
@@ -46,6 +55,8 @@ async def health_check():
             "rewards": "/api/rewards",
             "users": "/api/users",
             "roles": "/api/roles",
+            "categories": "/api/categories",  # добавить категории
+            "auth": "/api/auth",  # можно добавить auth
             "web": "/"
         }
     }
