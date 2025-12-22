@@ -1,14 +1,19 @@
-import uvicorn
 from fastapi import FastAPI
-from app.api.sample import router as sample_router
-from app.api.auth import router as auth_router
-from app.api.roles import router as role_router
+from fastapi.staticfiles import StaticFiles
+from app.api import web
 
-app = FastAPI(title="individual_project_template", version="0.0.1")
+app = FastAPI(title="Краудфандинговая платформа")
 
-app.include_router(sample_router)
-app.include_router(auth_router)
-app.include_router(role_router)
+# Подключение статических файлов (CSS, JS, изображения)
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+# Подключение веб-роутера
+app.include_router(web.router)
+
+@app.get("/api/health")
+async def health_check():
+    return {"status": "ok", "message": "Сервер работает"}
 
 if __name__ == "__main__":
-    uvicorn.run(app=app)
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
