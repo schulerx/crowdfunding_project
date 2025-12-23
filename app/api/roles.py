@@ -43,7 +43,7 @@ async def get_role(
 
 
 @router.put("/roles/{id}", summary="Изменение конкретной роли")
-async def get_role(
+async def edit_role(
     db: DBDep,
     role_data: SRoleAdd,
     id: int,

@@ -9,11 +9,12 @@ router = APIRouter(prefix="/api/donations", tags=["donations"])
 
 @router.get("/", response_model=List[SDonationGet])
 async def get_donations(
+    db: DBDep,
     skip: int = 0, 
     limit: int = 100, 
     user_id: Optional[int] = None,
     project_id: Optional[int] = None,
-    db = DBDep
+    
 ):
     """Получить все пожертвования с фильтрацией"""
     query = db.query(DonationModel)
@@ -26,7 +27,7 @@ async def get_donations(
     return query.offset(skip).limit(limit).all()
 
 @router.get("/{donation_id}", response_model=SDonationGet)
-async def get_donation(donation_id: int, db = DBDep):
+async def get_donation(db: DBDep,donation_id: int):
     """Получить пожертвование по ID"""
     donation = db.query(DonationModel).filter(DonationModel.id == donation_id).first()
     if not donation:
@@ -34,7 +35,7 @@ async def get_donation(donation_id: int, db = DBDep):
     return donation
 
 @router.post("/", response_model=SDonationGet, status_code=201)
-async def create_donation(donation_data: SDonationAdd, db = DBDep):
+async def create_donation(db: DBDep, donation_data: SDonationAdd):
     """Создать новое пожертвование"""
     donation = DonationModel(**donation_data.dict())
     db.add(donation)
@@ -44,9 +45,10 @@ async def create_donation(donation_data: SDonationAdd, db = DBDep):
 
 @router.put("/{donation_id}", response_model=SDonationGet)
 async def update_donation(
+    db: DBDep,
     donation_id: int, 
     donation_data: SDonationUpdate, 
-    db = DBDep
+ 
 ):
     """Обновить пожертвование"""
     donation = db.query(DonationModel).filter(DonationModel.id == donation_id).first()
@@ -61,7 +63,7 @@ async def update_donation(
     return donation
 
 @router.delete("/{donation_id}")
-async def delete_donation(donation_id: int, db = DBDep):
+async def delete_donation(db: DBDep,donation_id: int):
     """Удалить пожертвование"""
     donation = db.query(DonationModel).filter(DonationModel.id == donation_id).first()
     if not donation:

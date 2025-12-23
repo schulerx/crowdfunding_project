@@ -7,12 +7,12 @@ from app.schemes.categories import SCategoriesAdd, SCategoriesUpdate, SCategorie
 router = APIRouter(prefix="/api/categories", tags=["categories"])
 
 @router.get("/", response_model=List[SCategoriesGet])
-async def get_categories(skip: int = 0, limit: int = 100, db = DBDep):
+async def get_categories(db: DBDep, skip: int = 0, limit: int = 100, ):
     """Получить все категории"""
     return db.query(CategoriesModel).offset(skip).limit(limit).all()
 
 @router.get("/{category_id}", response_model=SCategoriesGet)
-async def get_category(category_id: int, db = DBDep):
+async def get_category(db: DBDep,category_id: int):
     """Получить категорию по ID"""
     category = db.query(CategoriesModel).filter(CategoriesModel.id == category_id).first()
     if not category:
@@ -20,7 +20,8 @@ async def get_category(category_id: int, db = DBDep):
     return category
 
 @router.post("/", response_model=SCategoriesGet, status_code=201)
-async def create_category(category_data: SCategoriesAdd, db = DBDep):
+@router.post("/", response_model=SCategoriesGet, status_code=201)
+async def create_category(db: DBDep, category_data: SCategoriesAdd):
     """Создать новую категорию"""
     category = CategoriesModel(**category_data.dict())
     db.add(category)
@@ -30,9 +31,9 @@ async def create_category(category_data: SCategoriesAdd, db = DBDep):
 
 @router.put("/{category_id}", response_model=SCategoriesGet)
 async def update_category(
+    db: DBDep,
     category_id: int, 
     category_data: SCategoriesUpdate, 
-    db = DBDep
 ):
     """Обновить категорию"""
     category = db.query(CategoriesModel).filter(CategoriesModel.id == category_id).first()
@@ -47,7 +48,7 @@ async def update_category(
     return category
 
 @router.delete("/{category_id}")
-async def delete_category(category_id: int, db = DBDep):
+async def delete_category(db: DBDep, category_id: int):
     """Удалить категорию"""
     category = db.query(CategoriesModel).filter(CategoriesModel.id == category_id).first()
     if not category:
