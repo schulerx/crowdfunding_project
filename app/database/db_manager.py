@@ -1,10 +1,10 @@
-from app.database.database import async_session_maker
+from app.repositories.project import ProjectsRepository
 from app.repositories.roles import RolesRepository
 from app.repositories.users import UsersRepository
 
 
 class DBManager:
-    def __init__(self, session_factory: async_session_maker):
+    def __init__(self, session_factory):
         self.session_factory = session_factory
 
     async def __aenter__(self):
@@ -13,6 +13,7 @@ class DBManager:
         # Пример:
         self.users = UsersRepository(self.session)
         self.roles = RolesRepository(self.session)
+        self.projects = ProjectsRepository(self.session)
         return self
 
     async def __aexit__(self, *args):

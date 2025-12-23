@@ -4,6 +4,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.database import Base
 if TYPE_CHECKING:
    from app.models.users import UserModel
+   from app.models.categories import CategoriesModel
+
+
 
 class ProjectModel(Base):
    __tablename__ = "projects"
@@ -23,12 +26,14 @@ class ProjectModel(Base):
    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
    date_start: Mapped[int] = mapped_column(Integer, nullable=False)
    date_end: Mapped[int] = mapped_column(Integer, nullable=False)
+
+
    creator: Mapped["UserModel"] = relationship(
        "UserModel",
        foreign_keys=[creator_id]
    )
-   category: Mapped["CategoryModel"] = relationship(
-       "CategoryModel",
+   category: Mapped["CategoriesModel"] = relationship(
+       "CategoriesModel",
        foreign_keys=[category_id]
    )
 
