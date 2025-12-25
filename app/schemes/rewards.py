@@ -5,7 +5,6 @@ from pydantic import BaseModel
 
 
 class SRewardAdd(BaseModel):
-    project_id: int | None = None
     title: str | None = None
     description: str | None = None
     required_quantity: int | None = None

@@ -1,4 +1,5 @@
 from app.repositories.project import ProjectsRepository
+from app.repositories.rewards import RewardsRepository
 from app.repositories.roles import RolesRepository
 from app.repositories.users import UsersRepository
 
@@ -14,6 +15,7 @@ class DBManager:
         self.users = UsersRepository(self.session)
         self.roles = RolesRepository(self.session)
         self.projects = ProjectsRepository(self.session)
+        self.rewards = RewardsRepository(self.session)
         return self
 
     async def __aexit__(self, *args):

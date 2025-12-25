@@ -4,6 +4,7 @@ from typing import List, Optional
 from app.api.dependencies import DBDep
 from app.models.rewards import RewardModel
 from app.schemes.rewards import SRewardAdd, SRewardUpdate, SRewardGet
+from app.services.rewards import RewardsService
 
 router = APIRouter(prefix="/api/rewards", tags=["rewards"])
 
@@ -12,16 +13,13 @@ async def get_rewards(
     db: DBDep,
     skip: int = 0, 
     limit: int = 100, 
-    project_id: Optional[int] = None,
+    
    
 ):
     """Получить все награды с фильтрацией"""
-    query = db.query(RewardModel)
-    
-    if project_id:
-        query = query.filter(RewardModel.project_id == project_id)
-    
-    return query.offset(skip).limit(limit).all()
+    rewards = await RewardsService(db).get_filtered_rewards(offset=skip, limit=limit)
+   
+    return rewards
 
 @router.get("/{reward_id}", response_model=SRewardGet)
 async def get_reward(db: DBDep, reward_id: int):
@@ -34,10 +32,8 @@ async def get_reward(db: DBDep, reward_id: int):
 @router.post("/", response_model=SRewardGet, status_code=201)
 async def create_reward(db: DBDep,reward_data: SRewardAdd):
     """Создать новую награду"""
-    reward = RewardModel(**reward_data.dict())
-    db.add(reward)
-    db.commit()
-    db.refresh(reward)
+    reward = await RewardsService(db).create_reward(reward_data)
+   
     return reward
 
 @router.put("/{reward_id}", response_model=SRewardGet)
